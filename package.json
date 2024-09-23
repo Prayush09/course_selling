@@ -1,0 +1,19 @@
+{
+  "name": "week-8",
+  "version": "1.0.0",
+  "description": "- Initialize a new Node.js project\r     - Add Express, jsonwebtoken to it \r     - Create index.js\r     - Add route skeleton for user login, signup, purchase a course, see course\r     - Add routes for admin login, admin signup, create a course, delete a course, add course content.\r     - Add a middlewares for user and admin auth\r     - Add a database (mongodb), use dotenv to store the database connection string \r     - Define the schema for User, admin, course, purchase\r     - Complete the routes for user login, singup, purchase a course, see course(extra point - user express routing to better strucutre your routes)\r     - Create the front-end",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3",
+    "nodemon": "^3.1.7"
+  }
+}
