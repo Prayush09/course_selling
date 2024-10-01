@@ -9,16 +9,20 @@ const SALT_ROUNDS = 10;
 //design the schema for the application.
 const adminRouter = Router();
 
-adminRouter.post('/signup', async (req, res)=>{
-   const {email , password, firstName, lastName} = req.body; //add zod validation!
+adminRouter.get('/front-endSignup', (req, res) => {
+    res.render("AdminSignup", {title: "Admin Signup"});
+})
 
-   if(!email || !password){
+adminRouter.post('/signup', async (req, res)=>{
+    const {email , password, firstName, lastName} = req.body; //add zod validation!
+
+    if(!email || !password){
     return res.status(400).json({
         message: "Email and password are required!"
     })
-   }
+    }
 
-   try{
+    try{
     const existingAdmin = await adminModel.findOne({email});
     if(existingAdmin){
         return res.status(409).json({
@@ -31,24 +35,30 @@ adminRouter.post('/signup', async (req, res)=>{
     const newAdmin = new adminModel({email, password: hashedPass, firstName, lastName});
     await newAdmin.save();
 
-    res.status(201).json({message: "Admin Signup successful!"})
+    res.status(201).render("SuccessfulSignup", {newAdmin});
 
-   }catch(error){
+    }catch(error){
     res.status(500).json({
         message: "Admin Signup Failed!",
         error
     })
-   }
+    }
 
 });
+
+
+adminRouter.get('/loginPage', (req, res) => {
+    res.render("LoginPage", {title:"Admin Login Page"})
+})
+
 
 adminRouter.post('/login', async (req, res)=>{
     const {email , password } = req.body; //add zod validation!
 
     if(!email || !password){
-     return res.status(400).json({
-         message: "Email and password are required!"
-     })
+        return res.status(400).json({
+            message: "Email and password are required!"
+        })
     }
     try{
         //finding only one admin
@@ -59,7 +69,7 @@ adminRouter.post('/login', async (req, res)=>{
         if (!admin) {
             return res.status(404).json({ message: "Admin not found" });
         }
-           
+        
         const isPasswordValid = await bcrypt.compare(password, admin.password);
         if(!isPasswordValid){
             return res.status(401).json({message: "Invalid Credentials"})
@@ -69,17 +79,28 @@ adminRouter.post('/login', async (req, res)=>{
             id: admin._id
         }, JWT_Admin_Password);
 
-        res.json({
-            token, 
-            message: "Successful!"
-        })
+        res.render("AdminDashboard", {admin, token})
     }catch(error){
         res.status(500).json({ message: "Error during login", error });
     }
- 
+
 });
 
+adminRouter.get('/addCourse', async (req, res) => {
+    const adminEmail = req.query.adminEmail;
+    try {
+        const admin = await adminModel.findOne({ email: adminEmail }); 
+        if (!admin) {
+            return res.status(404).send("Admin not found");
+        }
+        res.render('addCourse', { admin }); 
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+});
 
+//comes under admin dashboard, if they want to create a course or edit/delete a course. 
 adminRouter.post('/course', adminMiddleware, async (req, res) => {
     const { title, description, imageURL, price } = req.body;
     const creatorId = req.userId;
@@ -111,6 +132,20 @@ adminRouter.post('/course', adminMiddleware, async (req, res) => {
             message: "Error creating course",
             error: error.message
         });
+    }
+});
+
+adminRouter.get('/editCourse', async (req, res) => {
+    const adminEmail = req.query.adminEmail; 
+    try {
+        const admin = await adminModel.findOne({ email: adminEmail }); 
+        if (!admin) {
+            return res.status(404).send("Admin not found");
+        }
+        res.render('editCourse', { admin }); 
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
     }
 });
 
@@ -155,13 +190,38 @@ adminRouter.put('/course', adminMiddleware, async (req, res) => {
 });
 
 
-adminRouter.get('/course/bulk', async (req, res)=>{
-    const courses = await courseModel.find({})
+adminRouter.get('/course/bulk', async (req, res) => {
+    const adminEmail = req.query.adminEmail; // Get the admin email from query params
+    try {
+        const admin = await adminModel.findOne({ email: adminEmail }); // Fetch admin from the database
+        if (!admin) {
+            return res.status(404).send("Admin not found");
+        }
 
-    res.send({
-        courses
-    })
+        const courses = await courseModel.find({}); // Fetch all courses
+        res.render('bulkOrder', { admin, courses }); // Pass admin and courses to the view
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
 });
+
+
+adminRouter.get('/adminDashboard', async (req, res) => {
+    const adminEmail = req.query.adminEmail; 
+    try {
+        const admin = await adminModel.findOne({ email: adminEmail }); 
+        if (!admin) {
+            return res.status(404).send("Admin not found");
+        }
+        res.render("AdminDashboard", {title: "Admin Dashboard", admin});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+   
+})
+
 
 module.exports = {
     adminRouter: adminRouter

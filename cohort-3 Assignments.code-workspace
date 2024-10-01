@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../cohort-3 Assignments"
+		},
+		{
+			"path": "../../../Web Dev/CapstoneProject_Homey"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "cohort-3 Assignments"
+	}
+}

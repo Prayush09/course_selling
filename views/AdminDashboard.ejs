@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+            background-color: #f0f4f8; /* Light background color */
+        }
+        h1 {
+            color: #333; /* Dark text color */
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px; /* Increased font size for better readability */
+            margin-bottom: 20px;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 0; /* Space between links */
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            text-decoration: none; /* Remove underline */
+            border-radius: 4px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+        a:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome, <%= admin.firstName %>!</h1>
+    <p>You can now add a course, edit a course, or see the bulk order here:</p>
+    <a href="/admin/editCourse?adminEmail=<%=admin.email%>">Edit a Course</a>
+    <a href="/admin/addCourse?adminEmail=<%=admin.email%>">Add a Course</a>
+    <a href="/admin/course/bulk?adminEmail=<%=admin.email%>">Bulk Order!</a>
+</body>
+</html>

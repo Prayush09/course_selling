@@ -6,6 +6,11 @@ const mongoose = require('mongoose')
 
 const app = express();
 app.use(express.json());
+app.set("views", "views");
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
 
 const {courseRouter} = require("./routes/course");
 const {userRouter} = require('./routes/user');

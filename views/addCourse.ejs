@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f8; /* Light background color */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center contents horizontally */
+            justify-content: center; /* Center contents vertically */
+            height: 100vh; /* Full viewport height */
+        }
+        h1 {
+            color: #333; /* Dark text color */
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 400px; /* Increased width for better usability */
+            padding: 20px;
+            border: 2px solid #4CAF50; /* Green border */
+            border-radius: 8px; /* Rounded corners */
+            background-color: white; /* White background for the form */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold; /* Bold labels for emphasis */
+        }
+        input, textarea {
+            padding: 10px; /* Increased padding for inputs */
+            margin-bottom: 15px; /* Space between inputs */
+            border: 1px solid #ccc; /* Light grey border */
+            border-radius: 4px; /* Rounded corners for inputs */
+            font-size: 16px; /* Font size for inputs */
+        }
+        button {
+            background-color: #4CAF50; /* Green button */
+            color: white; /* White text */
+            padding: 10px;
+            border: none;
+            border-radius: 4px; /* Rounded corners for button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Font size for button */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        a {
+            margin-top: 15px; /* Space above the link */
+            text-decoration: none; /* Remove underline */
+            color: #4CAF50; /* Link color */
+            font-weight: bold; /* Bold link */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+        a:hover {
+            color: #388e3c; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Create a New Course</h1>
+    <form id="createCourseForm" action="/admin/course" method="POST">
+        <input type="hidden" id="token" name="token" required>
+
+        <label for="title">Course Title:</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+        
+        <label for="imageURL">Image URL:</label>
+        <input type="text" id="imageURL" name="imageURL" required>
+        
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required step="0.01">
+
+        <button type="submit">Create Course</button>
+    </form>
+
+    <a href="/admin/adminDashboard?adminEmail=<%= admin.email %>" class="button">Back to Dashboard</a>
+
+    <script>
+        // Function to add the JWT token to the hidden input field in the form
+        function addTokenToForm(formId) {
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                const hiddenInput = document.getElementById('token');
+                if (hiddenInput) {
+                    hiddenInput.value = token; // Set the value of the hidden input to the token
+                }
+            }
+        }
+
+        // Call the function to add the token to the form
+        addTokenToForm('createCourseForm');
+    </script>
+</body>
+</html>
