@@ -65,9 +65,11 @@
 </head>
 <body>
     <h1>Update Course</h1>
-    <form action="/admin/course" method="PUT"> 
-        <label for="courseId">Course ID:</label>
-        <input type="text" id="courseId" name="courseId" required>
+    <form id="updateCourseForm"> <!-- Changed ID for form -->
+        <label for="courseId">Course ID (MongoDB ObjectId):</label>
+        <input type="text" id="courseId" name="courseId" required 
+               pattern="^[a-fA-F0-9]{24}$" 
+               title="Please enter a valid MongoDB ObjectId (24 hex characters)">
         
         <label for="title">Course Title:</label>
         <input type="text" id="title" name="title" required>
@@ -85,5 +87,38 @@
     </form>
 
     <a href="/admin/adminDashboard?adminEmail=<%=admin.email%>">Back to Dashboard</a>
+
+    <script>
+        document.getElementById('updateCourseForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(this); // Collect form data
+            const courseId = formData.get('courseId');
+            const data = {
+                courseId: formData.get('courseId'),
+                title: formData.get('title'),
+                description: formData.get('description'),
+                imageURL: formData.get('imageURL'),
+                price: formData.get('price')
+            };
+
+            fetch(`/admin/course`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Optionally, redirect or show success message
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>
+

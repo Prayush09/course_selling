@@ -2,22 +2,21 @@ const { JWT_Admin_Password } = require("../config");
 const jwt = require('jsonwebtoken');
 
 // Middleware to authenticate JWT token for admin
-function adminMiddleware(req, res, next) {
-    const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(' ')[1];  // Format: 'Bearer <token>'
-    
+const adminMiddleware = async (req, res, next) => {
+    const token = req.cookies.token; // Get the token from cookies
     if (!token) {
-        return res.status(401).json({ message: "Token is missing" });  // Use 401 for missing token
+        return res.status(403).json({ message: "No token provided" });
     }
-
+    
     try {
-        const decodedInfo = jwt.verify(token, JWT_Admin_Password);
-        req.userId = decodedInfo.id;  // Attach decoded admin ID to request
-        next();
-    } catch (err) {
-        return res.status(401).json({ message: "Invalid token!" });  // Use 401 for invalid token
+        const decoded = jwt.verify(token, JWT_Admin_Password);
+        req.userId = decoded.id; // Attach user id to the request object
+        next(); // Proceed to the next middleware/route handler
+    } catch (error) {
+        return res.status(401).json({ message: "Unauthorized" });
     }
-}
+};
+
 
 module.exports = {
     adminMiddleware

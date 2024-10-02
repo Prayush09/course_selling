@@ -2,14 +2,18 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
-
+const cookieParser = require('cookie-parser');
+const path = require("path")
+const methodOverride = require('method-override');
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 app.set("views", "views");
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true })); // To parse URL encoded bodies
+app.use(methodOverride('_method')); // Allow overriding HTTP methods using query parameters
 
 
 const {courseRouter} = require("./routes/course");

@@ -3,13 +3,14 @@ const {adminModel, courseModel} = require("../db")
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const {JWT_Admin_Password} = require("../config")
+const mongoose = require('mongoose')
 const { ObjectId } = require("mongodb"); 
 const { adminMiddleware } = require("../middleware/adminMiddleware")
 const SALT_ROUNDS = 10;
 //design the schema for the application.
 const adminRouter = Router();
 
-adminRouter.get('/front-endSignup', (req, res) => {
+adminRouter.get('/adminSignup', (req, res) => {
     res.render("AdminSignup", {title: "Admin Signup"});
 })
 
@@ -79,7 +80,13 @@ adminRouter.post('/login', async (req, res)=>{
             id: admin._id
         }, JWT_Admin_Password);
 
-        res.render("AdminDashboard", {admin, token})
+        res.cookie('token', token, {
+            httpOnly: true, // Helps prevent XSS attacks
+            secure: process.env.NODE_ENV === 'production', // Only set secure cookies in production
+            maxAge: 3600000 // 1 hour
+        });
+
+        res.render("AdminDashboard", {admin})
     }catch(error){
         res.status(500).json({ message: "Error during login", error });
     }
@@ -111,13 +118,14 @@ adminRouter.post('/course', adminMiddleware, async (req, res) => {
 
     try {
         // Create a new course
+        const creatorObjectId = new mongoose.Types.ObjectId(creatorId);
         const newCourse = new courseModel({
-            _id: new ObjectId(),
+            _id: new mongoose.Types.ObjectId(),
             title,
             description,
             imageURL,
             price,
-            creatorId: new ObjectId(creatorId)
+            creatorId: creatorObjectId
         });
 
         // Save the course to the database
@@ -154,30 +162,38 @@ adminRouter.put('/course', adminMiddleware, async (req, res) => {
     const { title, description, imageURL, price, courseId } = req.body;
 
     try {
-        const course = await courseModel.updateOne({
-            _id: courseId,
-            creatorId: adminId
-        }, {
-            $set: {
-                title: title,
-                description: description,
-                imageURL: imageURL,
-                price: price
+        const course = await courseModel.updateOne(
+            {
+                _id: courseId,
+                creatorId: adminId
+            },
+            {
+                $set: {
+                    title: title,
+                    description: description,
+                    imageURL: imageURL,
+                    price: price
+                }
             }
-        });
+        );
 
-        if (course.nModified > 0) {
+        console.log("Passed until now");
+        if (course.matchedCount > 0 && course.modifiedCount > 0) {
+            // Document found and updated
             res.status(200).send({
                 message: "Successfully updated",
                 courseId: courseId
             });
-        } else if (course.n === 0) {
-            res.status(404).send({
-                message: "Course not found or wrong admin"
+        } else if (course.matchedCount > 0 && course.modifiedCount === 0) {
+            // Document found but no changes were made (same values)
+            res.status(200).send({
+                message: "Course found but no changes made",
+                courseId: courseId
             });
         } else {
-            res.status(403).send({
-                message: "No changes made"
+            // No document was matched (e.g. wrong courseId or adminId)
+            res.status(404).send({
+                message: "Course not found or wrong admin"
             });
         }
     } catch (err) {
@@ -190,6 +206,8 @@ adminRouter.put('/course', adminMiddleware, async (req, res) => {
 });
 
 
+//
+
 adminRouter.get('/course/bulk', async (req, res) => {
     const adminEmail = req.query.adminEmail; // Get the admin email from query params
     try {
@@ -198,7 +216,7 @@ adminRouter.get('/course/bulk', async (req, res) => {
             return res.status(404).send("Admin not found");
         }
 
-        const courses = await courseModel.find({}); // Fetch all courses
+        const courses = await courseModel.find({creatorId: admin._id}); // Fetch all courses
         res.render('bulkOrder', { admin, courses }); // Pass admin and courses to the view
     } catch (error) {
         console.error(error);
@@ -221,6 +239,12 @@ adminRouter.get('/adminDashboard', async (req, res) => {
     }
    
 })
+
+adminRouter.post('/logout', (req, res) => {
+    res.clearCookie('token'); // Clear the cookie
+    res.status(200).json({ message: "Successfully logged out" });
+});
+
 
 
 module.exports = {

@@ -1,1 +1,27 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Order</title>
+    <link rel="stylesheet" href="/bulkOrder.css">
+</head>
+<body>
+    <h1>All the available courses</h1>
+    <div class="courses">
+        <% courses.forEach((course) => { %>
+        <div class="course" id="<%= course._id %>">
+            <h3><%= course.title %></h3>
+            <ul>
+                <li><%= course.description %></li>
+                <li><img src="<%= course.imageURL %>" alt="<%= course.title %> image"></li>
+                <li>Price: $<%= course.price %></li>
+            </ul>
+        </div>
+        <% }) %>
+    </div>
+    <footer>
+        <h4>Belongs to <%=admin.firstName%></h4>
+    </footer>
+</body>
+</html>

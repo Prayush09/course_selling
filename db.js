@@ -4,7 +4,8 @@ console.log("connected to DB")
 
 const Schema = mongoose.Schema;
 
-const ObjectId = Schema.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
+
 
 const userSchema = new Schema({
     email: {type: String, unique: true},
@@ -21,13 +22,29 @@ const adminSchema = new Schema({
 })
 
 const courseSchema = new Schema({
-    _id: ObjectId,
-    title: String,
-    description: String, 
-    imageURL: String,
-    price: Number,
-    creatorID: ObjectId
-})
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    imageURL: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    creatorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'adminModel' // Assuming 'Admin' is the reference model for admins
+    }
+});
+
 
 const purchaseSchema = new Schema({
     userId: ObjectId,

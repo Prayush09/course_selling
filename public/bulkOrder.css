@@ -1,0 +1,66 @@
+/* bulkOrder.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.courses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.course {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.course:hover {
+    transform: scale(1.05);
+}
+
+.course h3 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.course ul {
+    list-style: none;
+    padding: 0;
+}
+
+.course ul li {
+    margin: 10px 0;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.course img {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 1.2rem;
+    color: #666;
+}
