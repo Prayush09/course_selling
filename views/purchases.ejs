@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/purchases.css">
+    <title>Your Purchases</title>
+</head>
+<body>
+    <h1>Your Purchases</h1>
+    <div class="purchases">
+        <% courseDetails.forEach(course => { %>
+            <div class="purchase">
+                <h3><%= course.title %></h3>
+                <p>Description: <%= course.description %></p>
+                <p>Price: $<%= course.price %></p>
+            </div>
+        <% }); %>
+    </div>
+    <a href="/user/userDashboard?userEmail=<%=userEmail%>" class="back-button">Back to Dashboard</a>
+</body>
+</html>

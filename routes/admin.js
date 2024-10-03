@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const {JWT_Admin_Password} = require("../config")
 const mongoose = require('mongoose')
-const { ObjectId } = require("mongodb"); 
 const { adminMiddleware } = require("../middleware/adminMiddleware")
 const SALT_ROUNDS = 10;
 //design the schema for the application.

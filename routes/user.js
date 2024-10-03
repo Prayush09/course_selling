@@ -1,12 +1,30 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { userModel, purchaseModel } = require("../db");
+const { userModel, purchaseModel, courseModel } = require("../db");
 const {JWT_User_Password} = require("../config")
 const SALT_ROUNDS = 10;
 const { userMiddleware } = require("../middleware/userMiddleware")
 const userRouter = Router();
 
+
+userRouter.get('/userDashboard', userMiddleware, async (req, res)=> {
+    const userEmail = req.query.userEmail; 
+    try {
+        const user = await userModel.findOne({ email: userEmail }); 
+        if (!user) {
+            return res.status(404).send("user not found");
+        }
+        res.render("userDashboard", {title: "user Dashboard", user});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+})
+
+userRouter.get('/signup', (req, res)=>{
+    res.render('userSignup', {title:"User Sign up"});
+})
 
 // Signup route
 userRouter.post('/signup', async (req, res) => {
@@ -30,11 +48,15 @@ userRouter.post('/signup', async (req, res) => {
         const newUser = new userModel({ email, password: hashedPassword });
         await newUser.save();
 
-        res.status(201).json({ message: "Signup successful" });
+        res.render('userLogin', {title:"Start logging in"});
     } catch (error) {
         res.status(500).json({ message: "Error during signup", error });
     }
 });
+
+userRouter.get('/login', (req, res)=>{
+    res.render('userLogin', {title:"User login"});
+})
 
 // Login route
 userRouter.post('/login', async (req, res) => {
@@ -60,24 +82,91 @@ userRouter.post('/login', async (req, res) => {
         // Generate JWT token
         const token = jwt.sign({ id: user._id }, JWT_User_Password);
 
-        res.json({ token, message: "Login successful" });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Only set secure cookies in production
+            maxAge: 3600000 // 1 hour
+        })
+
+        res.render('userDashboard', {user});
     } catch (error) {
         res.status(500).json({ message: "Error during login", error });
     }
 });
 
+userRouter.get('/purchase', userMiddleware, async (req, res) => {
+    const userEmail = req.query.userEmail;  
+    res.render('purchase', {title:"purchase a course", userEmail});
+})
+
+userRouter.post('/purchase', userMiddleware, async(req, res) => {
+    try {
+        const { courseId } = req.body;
+        const { userEmail } = req.query; // Fixed the query access to userEmail
+        const user = await userModel.findOne({ email: userEmail });
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        const purchase = await purchaseModel.create({
+            userId: user._id, // Use _id instead of ObjectId()
+            courseId: courseId
+        });
+        
+        await purchase.save();
+        res.status(201).json({ message: "Purchase successful", purchase });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred during the purchase process" });
+    }
+});
+
+
+userRouter.get('/seeCourses', async (req, res)=>{
+    const courses = await courseModel.find({});
+
+    //find every course available
+    const userEmail = req.query.userEmail; 
+    
+    res.render('seeCourses', {title:"See all the courses", courses, userEmail});
+})
+
 // Purchases route (protected by JWT)
 userRouter.get('/purchases', userMiddleware, async (req, res) => {
-    const userId = req.userId;
+    try {
+        const userEmail = req.query.userEmail;
+        const user = await userModel.findOne({ email: userEmail });
 
-    const purchases = await purchaseModel.find({
-        userId
-    })
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-    res.send({
-        purchases
-    })
+        const purchases = await purchaseModel.find({ userId: user._id });
+
+        const courseDetails = await Promise.all(
+            purchases.map(async (purchase) => {
+                const course = await courseModel.findById(purchase.courseId);
+                return {
+                    title: course.title,
+                    description: course.description,
+                    price: course.price,
+                };
+            })
+        );
+
+        res.render('purchases', { userEmail, courseDetails });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while fetching purchases" });
+    }
 });
+
+userRouter.post('/logout', (req, res) => {
+    res.clearCookie('token'); // Clear the cookie
+    res.status(200).json({ message: "Successfully logged out" });
+});
+
 
 module.exports = {
     userRouter
