@@ -7,21 +7,27 @@
     <link rel="stylesheet" href="/bulkOrder.css">
 </head>
 <body>
-    <h1>All the available courses</h1>
-    <div class="courses">
-        <% courses.forEach((course) => { %>
-        <div class="course" id="<%= course._id %>">
-            <h3><%= course.title %></h3>
-            <ul>
-                <li><%= course.description %></li>
-                <li><img src="<%= course.imageURL %>" alt="<%= course.title %> image"></li>
-                <li>Price: $<%= course.price %></li>
-            </ul>
+    <%- include('partials/header') %>
+    <div class="container">
+        <h1>All the available courses</h1>
+        <div class="courses">
+            <% courses.forEach((course) => { %>
+            <div class="course" id="<%= course._id %>">
+                <h3><%= course.title %></h3>
+                <ul>
+                    <li><%= course.description %></li>
+                    <li><img src="<%= course.imageURL %>" alt="<%= course.title %> image"></li>
+                    <li>Price: $<%= course.price %></li>
+                </ul>
+            </div>
+            <% }) %>
         </div>
-        <% }) %>
+        <h4 >Belongs to <%=admin.firstName%></h4>
+        <a href="/admin/adminDashboard?adminEmail=<%=admin.email%>" 
+            class="back-button">
+            Back to Dashboard
+        </a>
     </div>
-    <footer>
-        <h4>Belongs to <%=admin.firstName%></h4>
-    </footer>
+    <%- include('partials/footer') %>
 </body>
 </html>

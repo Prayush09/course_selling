@@ -5,68 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Course</title>
     <style>
-        body {
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0; 
+        }
+        .container{
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f0f4f8; /* Light background color */
+            background-color: #f0f4f8;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center contents horizontally */
-            justify-content: center; /* Center contents vertically */
-            height: 100vh; /* Full viewport height */
+            align-items: center;
+            justify-content: center;
+            height: 75vh;
         }
         h1 {
-            color: #333; /* Dark text color */
+            color: #333;
             margin-bottom: 20px;
         }
         form {
             display: flex;
             flex-direction: column;
-            width: 400px; /* Increased width for better usability */
+            width: 400px;
             padding: 20px;
-            border: 2px solid #4CAF50; /* Green border */
-            border-radius: 8px; /* Rounded corners */
-            background-color: white; /* White background for the form */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         label {
             margin: 10px 0 5px;
-            font-weight: bold; /* Bold labels for emphasis */
+            font-weight: bold;
         }
         input, textarea {
-            padding: 10px; /* Increased padding for inputs */
-            margin-bottom: 15px; /* Space between inputs */
-            border: 1px solid #ccc; /* Light grey border */
-            border-radius: 4px; /* Rounded corners for inputs */
-            font-size: 16px; /* Font size for inputs */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
         }
         button {
-            background-color: #4CAF50; /* Green button */
-            color: white; /* White text */
+            background-color: #4CAF50;
+            color: white;
             padding: 10px;
             border: none;
-            border-radius: 4px; /* Rounded corners for button */
-            cursor: pointer; /* Pointer cursor on hover */
-            font-size: 16px; /* Font size for button */
-            transition: background-color 0.3s; /* Smooth background transition */
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049; /* Darker green on hover */
+            background-color: #45a049;
         }
         a {
-            margin-top: 15px; /* Space above the link */
-            text-decoration: none; /* Remove underline */
-            color: #4CAF50; /* Link color */
-            font-weight: bold; /* Bold link */
-            transition: color 0.3s; /* Smooth color transition */
+            margin-top: 15px;
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            transition: color 0.3s;
         }
         a:hover {
-            color: #388e3c; /* Darker green on hover */
+            color: #388e3c;
         }
     </style>
 </head>
 <body>
+    <%- include('partials/header') %>
+    <div class="container">
     <h1>Create a New Course</h1>
     <form id="createCourseForm" action="/admin/course" method="POST">
         <input type="hidden" id="token" name="token" required>
@@ -86,22 +93,25 @@
         <button type="submit">Create Course</button>
     </form>
 
-    <a href="/admin/adminDashboard?adminEmail=<%= admin.email %>" class="button">Back to Dashboard</a>
+    <a href="/admin/adminDashboard?adminEmail=<%=admin.email%>" 
+        class="back-button">
+         Back to Dashboard
+     </a>
 
     <script>
-        // Function to add the JWT token to the hidden input field in the form
         function addTokenToForm(formId) {
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 const hiddenInput = document.getElementById('token');
                 if (hiddenInput) {
-                    hiddenInput.value = token; // Set the value of the hidden input to the token
+                    hiddenInput.value = token;
                 }
             }
         }
 
-        // Call the function to add the token to the form
         addTokenToForm('createCourseForm');
     </script>
+    </div>
+    <%- include('partials/footer') %>
 </body>
 </html>

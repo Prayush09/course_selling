@@ -2,12 +2,47 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
-    padding: 20px;
+    padding: 0;
 }
 
+/* Header Styles */
+header {
+    background-color: #333;
+    padding: 15px 0;
+}
+
+nav {
+    text-align: center;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+.nav-list li {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.nav-list a:hover {
+    color: #f39c12; /* Highlight color on hover */
+}
+
+/* Dashboard Styles */
 .dashboard {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 40px auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -21,29 +56,24 @@ h1 {
     margin-bottom: 30px;
 }
 
-nav {
-    margin-bottom: 30px;
-}
-
 nav ul {
     list-style: none;
     padding: 0;
     display: flex;
     justify-content: space-around;
-}
-
-nav li {
-    margin: 0 15px;
+    margin-bottom: 30px;
 }
 
 nav a {
     text-decoration: none;
     color: #28a745;
     font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #218838;
 }
 
 .content {
@@ -58,4 +88,20 @@ nav a:hover {
 .content p {
     font-size: 1.2rem;
     color: #666;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
 }

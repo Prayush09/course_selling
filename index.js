@@ -15,14 +15,28 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true })); // To parse URL encoded bodies
 app.use(methodOverride('_method')); // Allow overriding HTTP methods using query parameters
 
+app.get('/', (req, res)=>{
+    res.render('index');
+})
+
+
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+
+app.get('/courses', (req, res) => {
+    res.render('seeCourses');
+});
+
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
 
 const {courseRouter} = require("./routes/course");
 const {userRouter} = require('./routes/user');
 const {adminRouter} = require('./routes/admin');
 
 
-//used a router to create these endpoints.
-//very clean, easy to edit
 app.use('/user', userRouter);
 app.use('/course', courseRouter);
 app.use('/admin', adminRouter);

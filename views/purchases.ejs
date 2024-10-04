@@ -7,16 +7,27 @@
     <title>Your Purchases</title>
 </head>
 <body>
-    <h1>Your Purchases</h1>
-    <div class="purchases">
-        <% courseDetails.forEach(course => { %>
-            <div class="purchase">
-                <h3><%= course.title %></h3>
-                <p>Description: <%= course.description %></p>
-                <p>Price: $<%= course.price %></p>
-            </div>
-        <% }); %>
-    </div>
-    <a href="/user/userDashboard?userEmail=<%=userEmail%>" class="back-button">Back to Dashboard</a>
+    <!-- Include Header -->
+    <%- include('partials/header') %>
+
+    <!-- Main Content -->
+    <main>
+        <h1>Your Purchases</h1>
+        <div class="purchases">
+            <% courseDetails.forEach(course => { %>
+                <div class="purchase">
+                    <h3><%= course.title %></h3>
+                    <p>Description: <%= course.description %></p>
+                    <p>Price: $<%= course.price %></p>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Back to Dashboard Button -->
+        <a href="/user/userDashboard?userEmail=<%=userEmail%>" class="back-button">Back to Dashboard</a>
+    </main>
+
+    <!-- Include Footer -->
+    <%- include('partials/footer') %>
 </body>
 </html>

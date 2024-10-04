@@ -39,9 +39,11 @@
     </style>
 </head>
 <body>
+    <%- include('partials/header') %>
     <div class="container">
         <h1>You have signed up successfully, <%= newAdmin.firstName %>!</h1>
         <p>Please move to the <a href="/admin/loginPage">login page</a>.</p>
     </div>
+    <%- include('partials/footer') %>
 </body>
 </html>

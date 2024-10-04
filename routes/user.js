@@ -95,22 +95,30 @@ userRouter.post('/login', async (req, res) => {
 });
 
 userRouter.get('/purchase', userMiddleware, async (req, res) => {
-    const userEmail = req.query.userEmail;  
-    res.render('purchase', {title:"purchase a course", userEmail});
+    const userEmail = req.query.userEmail; 
+    const error = req.query.error; 
+    res.render('purchase', {title:"purchase a course", userEmail, error});
 })
 
-userRouter.post('/purchase', userMiddleware, async(req, res) => {
+userRouter.post('/purchase', userMiddleware, async (req, res) => {
     try {
         const { courseId } = req.body;
-        const { userEmail } = req.query; // Fixed the query access to userEmail
+        const { userEmail } = req.query;
         const user = await userModel.findOne({ email: userEmail });
         
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
         
+        //if already bought then don't proceed.
+        const existingPurchase = await purchaseModel.findOne({ userId: user._id, courseId });
+        
+        if (existingPurchase) {
+            return res.redirect(`/user/purchase?userEmail=${userEmail}&error=purchased`);
+        }
+
         const purchase = await purchaseModel.create({
-            userId: user._id, // Use _id instead of ObjectId()
+            userId: user._id, 
             courseId: courseId
         });
         
@@ -121,6 +129,7 @@ userRouter.post('/purchase', userMiddleware, async(req, res) => {
         res.status(500).json({ message: "An error occurred during the purchase process" });
     }
 });
+
 
 
 userRouter.get('/seeCourses', async (req, res)=>{
