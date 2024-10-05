@@ -1,3 +1,5 @@
+[![Watch the video](https://raw.githubusercontent.com/yourusername/yourrepository/main/assets/thumbnail.jpg)](https://raw.githubusercontent.com/yourusername/yourrepository/main/assets/video.mp4)
+
 ## Create a course selling app
 
     - Initialize a new Node.js project - npm init -y - done
