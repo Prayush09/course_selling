@@ -6,12 +6,16 @@
     <link rel="stylesheet" href="/seeCourses.css">
     <title>Available Courses</title>
     <style>
-        body {
+        /* Make the page use flexbox layout */
+        html, body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            background-color: #f9f9f9;
             color: #333;
+            height: 100%;  /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column;  /* Layout body as column: header, main, footer */
         }
 
         header, footer {
@@ -22,6 +26,7 @@
         }
 
         main {
+            flex-grow: 1;  /* Make main grow to take available space */
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
@@ -73,24 +78,18 @@
             transform: translateY(-5px);
         }
 
-        .back-button {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.8rem 1.5rem;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
             font-size: 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-button:hover {
-            background-color: #0056b3;
         }
 
         footer p {
             font-size: 0.9rem;
+            margin: 0;
         }
     </style>
 </head>
@@ -100,21 +99,19 @@
 
     <!-- Main Content -->
     <main>
-        <h1>Available Courses</h1>
+        <h1>Explore Our Available Courses</h1>
         <div class="courses">
             <% courses.forEach(course => { %>
                 <div class="course">
                     <h3><%= course.title %></h3>
                     <p><strong>Description:</strong> <%= course.description %></p>
+                    <p><img src="<%=course.imageURL%>" alt="photo of the course"></p>
                     <p><strong>Price:</strong> $<%= course.price %></p>
                 </div>
             <% }); %>
         </div>
-
-        <!-- Back to Dashboard Button -->
-        <a href="/user/userDashboard?userEmail=<%=userEmail%>" class="back-button">Back to Dashboard</a>
     </main>
-    <div class="empty-container" style="flex-grow:1"></div>
+
     <!-- Include Footer -->
     <%- include('partials/footer') %>
 </body>

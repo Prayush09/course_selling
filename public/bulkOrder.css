@@ -1,11 +1,17 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+/* Ensure the page layout uses flexbox to keep the footer at the bottom */
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%; /* Ensure full height */
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
 }
 
-.container{
+/* Container to hold the main content */
+.container {
+    flex-grow: 1; /* Allows the container to expand and push the footer down */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -66,13 +72,16 @@ h1 {
 }
 
 footer {
+    background-color: #333;
+    color: white;
     text-align: center;
-    margin-top: 40px; /* Space above footer */
-    font-size: 1.2rem;
-    color: #666;
+    padding: 20px 0;
+    width: 100%;
+    font-size: 1rem;
+    position: relative;
+    bottom: 0;
+    flex-shrink: 0; /* Prevent footer from shrinking */
 }
-
-
 
 .back-button {
     display: inline-block;

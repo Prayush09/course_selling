@@ -48,7 +48,11 @@ adminRouter.post('/signup', async (req, res)=>{
 
 
 adminRouter.get('/loginPage', (req, res) => {
-    res.render("LoginPage", {title:"Admin Login Page"})
+    const error = req.query.error;
+    if(error)
+        res.render("LoginPage", {title:"Admin Login Page", error})
+    else    
+        res.render("LoginPage", {title:"Admin Login Page"});
 })
 
 
@@ -67,12 +71,12 @@ adminRouter.post('/login', async (req, res)=>{
         });
 
         if (!admin) {
-            return res.status(404).json({ message: "Admin not found" });
+            return res.redirect('/admin/loginPage?error=login')
         }
         
         const isPasswordValid = await bcrypt.compare(password, admin.password);
         if(!isPasswordValid){
-            return res.status(401).json({message: "Invalid Credentials"})
+            return res.redirect('/admin/loginPage?error=invalidPassword');
         }
 
         const token = jwt.sign({
@@ -190,7 +194,6 @@ adminRouter.put('/course', adminMiddleware, async (req, res) => {
                 courseId: courseId
             });
         } else {
-            // No document was matched (e.g. wrong courseId or adminId)
             res.status(404).send({
                 message: "Course not found or wrong admin"
             });

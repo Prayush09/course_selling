@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Course</title>
     <style>
-        body {
+        html, body {
+            height: 100%; /* Ensures the body takes full height */
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0; 
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column; /* Aligns children (main content and footer) vertically */
         }
         
         main {
@@ -95,6 +99,8 @@
             Back to Dashboard
         </a>
     </main>
+    
+    <!-- Add script for handling form submission and showing alerts -->
     <script>
         document.getElementById('updateCourseForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -117,15 +123,20 @@
             })
             .then(response => response.json())
             .then(data => {
+                // Display the message returned by the server in an alert
+                alert(data.message);
+
+                // Optionally, log success and course details to the console
                 console.log('Success:', data);
             })
             .catch((error) => {
+                // In case of an error, show a generic alert and log the error
+                alert('An error occurred while updating the course. Please try again.');
                 console.error('Error:', error);
             });
         });
     </script>
+    <div class="empty-container" style="flex-grow:1"></div>
     <%- include('partials/footer') %>
 </body>
-
 </html>
-

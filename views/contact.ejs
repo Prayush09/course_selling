@@ -4,15 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
-    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        }
+
+        .contact-section {
+            background-color: #fff;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #444;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #007bff;
+        }
+
+        .contact-details {
+            margin-top: 1rem;
+        }
+
+        .contact-details a {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
+
     <%- include('partials/header') %>
 
     <main>
         <section class="contact-section">
-            <h1>Contact Us</h1>
-            <p>If you have any questions or feedback, feel free to reach out to us through this contact page.</p>
+            <h1>Get in Touch</h1>
+            <p>We would love to hear from you! Whether you have questions, feedback, or just want to connect, our team is always ready to listen. Reach out through any of the platforms below, and we'll get back to you as soon as possible.</p>
+
+            <div class="contact-details">
+                <p>Connect with us on <a href="https://github.com/Prayush09">GitHub</a> for updates and collaboration opportunities.<br>
+                Send us a quick email at <a href="mailto:prayushgiri@gmail.com?subject=Reach out to us&body=Please enter a brief feedback or question that you may have regarding the site. Thank you!">prayushgiri@gmail.com</a> and let us know how we can assist you.</p>
+            </div>
         </section>
     </main>
 

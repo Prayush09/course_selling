@@ -20,6 +20,22 @@
             <button type="submit">Submit</button>
         </form>
     </main>
+    <div class="empty-container" style="flex-grow:1"></div>
     <%- include('partials/footer') %>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            const success = urlParams.get('success'); // Check for success parameter
+
+            if (error === 'login') {
+                alert('You are not a registered admin');
+            }
+
+            if(error=== 'invalidPassword'){
+                alert('Enter valid Credentials');
+            }
+        };
+    </script>
 </body>
 </html>

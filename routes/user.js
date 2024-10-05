@@ -97,7 +97,11 @@ userRouter.post('/login', async (req, res) => {
 userRouter.get('/purchase', userMiddleware, async (req, res) => {
     const userEmail = req.query.userEmail; 
     const error = req.query.error; 
-    res.render('purchase', {title:"purchase a course", userEmail, error});
+    const success = req.query.success;
+    if(error)
+        res.render('purchase', {title:"purchase a course", userEmail, error});
+    else    
+        res.render('purchase', {title:"purchase a course", userEmail, success});
 })
 
 userRouter.post('/purchase', userMiddleware, async (req, res) => {
@@ -123,7 +127,7 @@ userRouter.post('/purchase', userMiddleware, async (req, res) => {
         });
         
         await purchase.save();
-        res.status(201).json({ message: "Purchase successful", purchase });
+        res.redirect(`/user/purchase?userEmail=${userEmail}&success=true`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "An error occurred during the purchase process" });

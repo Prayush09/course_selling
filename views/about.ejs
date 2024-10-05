@@ -5,17 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
     <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .about-section {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            margin-top: 2rem;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #444;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            background-color: #f4f4f9;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 1rem;
+            padding: 1.5rem;
+            width: 250px;
+            text-align: center;
+        }
+
+        .team-member img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .team-member h3 {
+            font-size: 1.5rem;
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member p {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Include Header -->
     <%- include('partials/header') %>
 
+    <!-- Main Content -->
     <main>
         <section class="about-section">
             <h1>About Us</h1>
-            <p>We are a team of passionate individuals dedicated to delivering high-quality courses and content for our users. Learn more about us and our mission.</p>
+            <p>We are a team of passionate individuals dedicated to delivering high-quality courses and content to empower learners globally. Our mission is to provide accessible, affordable, and effective education to help users develop valuable skills and knowledge.</p>
+            <p>With years of experience in the industry, our team strives to create an enriching learning experience by offering a variety of courses that cater to different fields and interests.</p>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <div class="team-member">
+                <img src="/images/member1.jpg" alt="Team Member 1">
+                <h3>John Doe</h3>
+                <p>Lead Instructor</p>
+            </div>
+            <div class="team-member">
+                <img src="/images/member2.jpg" alt="Team Member 2">
+                <h3>Jane Smith</h3>
+                <p>Content Strategist</p>
+            </div>
+            <div class="team-member">
+                <img src="/images/member3.jpg" alt="Team Member 3">
+                <h3>Michael Lee</h3>
+                <p>Course Developer</p>
+            </div>
         </section>
     </main>
 
+    <!-- Include Footer -->
     <%- include('partials/footer') %>
 </body>
 </html>

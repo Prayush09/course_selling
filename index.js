@@ -4,6 +4,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser');
 const path = require("path")
+const {courseModel} = require('./db');
 const methodOverride = require('method-override');
 
 const app = express();
@@ -24,8 +25,9 @@ app.get('/about', (req, res) => {
     res.render('about');
 });
 
-app.get('/courses', (req, res) => {
-    res.render('seeCourses');
+app.get('/courses', async (req, res) => {
+    const courses = await courseModel.find({});
+    res.render('courses', {courses});
 });
 
 app.get('/contact', (req, res) => {

@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Course</title>
     <style>
-        body{
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0; 
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
         }
         .container{
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f0f4f8;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -69,49 +72,105 @@
         a:hover {
             color: #388e3c;
         }
+
+        /* Pop-up styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        .popup.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <%- include('partials/header') %>
+
     <div class="container">
-    <h1>Create a New Course</h1>
-    <form id="createCourseForm" action="/admin/course" method="POST">
-        <input type="hidden" id="token" name="token" required>
+        <h1>Create a New Course</h1>
+        <form id="createCourseForm">
+            <input type="hidden" id="token" name="token">
 
-        <label for="title">Course Title:</label>
-        <input type="text" id="title" name="title" required>
-        
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
-        
-        <label for="imageURL">Image URL:</label>
-        <input type="text" id="imageURL" name="imageURL" required>
-        
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" required step="0.01">
+            <label for="title">Course Title:</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+            
+            <label for="imageURL">Image URL:</label>
+            <input type="text" id="imageURL" name="imageURL" required>
+            
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" required step="0.01">
 
-        <button type="submit">Create Course</button>
-    </form>
+            <button type="submit">Create Course</button>
+        </form>
 
-    <a href="/admin/adminDashboard?adminEmail=<%=admin.email%>" 
-        class="back-button">
-         Back to Dashboard
-     </a>
+        <a href="/admin/adminDashboard?adminEmail=<%=admin.email%>" class="back-button">Back to Dashboard</a>
+    </div>
+
+    <!-- Pop-up for success or error messages -->
+    <div class="popup" id="popupMessage"></div>
 
     <script>
-        function addTokenToForm(formId) {
+        function addTokenToForm() {
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 const hiddenInput = document.getElementById('token');
-                if (hiddenInput) {
-                    hiddenInput.value = token;
-                }
+                hiddenInput.value = token;
             }
         }
 
-        addTokenToForm('createCourseForm');
+        document.getElementById('createCourseForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            
+            addTokenToForm(); // Ensure the token is added
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            const popup = document.getElementById('popupMessage');
+
+            try {
+                const response = await fetch('/admin/course', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                // Check for successful creation
+                if (response.ok) {
+                    popup.textContent = 'Course created successfully!';
+                    popup.style.color = 'green';
+                } else {
+                    popup.textContent = result.message || 'Failed to create the course!';
+                    popup.style.color = 'red';
+                }
+            } catch (error) {
+                popup.textContent = 'An error occurred. Please try again.';
+                popup.style.color = 'red';
+            }
+
+            popup.classList.add('active'); 
+            setTimeout(() => {
+                popup.classList.remove('active'); 
+            }, 3000);
+        });
     </script>
-    </div>
+    <div class="empty-container" style="flex-grow:1"></div>
     <%- include('partials/footer') %>
 </body>
 </html>

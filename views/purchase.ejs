@@ -3,36 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/purchase.css">
+    <link rel="stylesheet" href="/purchase.css"> <!-- Link to your CSS file -->
     <title>Purchase Course</title>
 </head>
 <body>
     <%- include('partials/header') %>
 
-    <div class="container">
+    <main class="container">
         <h1>Purchase Course</h1>
-        <form action="/user/purchase?userEmail=<%=userEmail%>" method="POST">
+        <form action="/user/purchase?userEmail=<%= userEmail %>" method="POST">
+            <label for="courseId">Course ID</label>
             <input type="text" id="courseId" name="courseId" required 
-               pattern="^[a-fA-F0-9]{24}$" 
-               title="Please enter a valid MongoDB ObjectId (24 hex characters)"
-               placeholder="Please enter courseID">
+                pattern="^[a-fA-F0-9]{24}$" 
+                title="Please enter a valid MongoDB ObjectId (24 hex characters)"
+                placeholder="Enter Course ID">
             <button type="submit">Purchase</button>
         </form>
-    </div>
+    </main>
 
-    <a href="/user/userDashboard?userEmail=<%=userEmail%>" class="back-button">Back to Dashboard</a>
+    <a href="/user/userDashboard?userEmail=<%= userEmail %>" class="back-button">Back to Dashboard</a>
+    <div class="empty-container"></div>
 
     <%- include('partials/footer') %>
+
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const error = urlParams.get('error');
-    
+            const success = urlParams.get('success'); // Check for success parameter
+
             if (error === 'purchased') {
                 alert('You have already purchased this course.');
             }
+
+            if (success === 'true') {
+                alert('Purchase successful!');
+            }
         };
     </script>
-    
 </body>
 </html>
