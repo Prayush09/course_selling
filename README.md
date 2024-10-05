@@ -1,4 +1,4 @@
-[![Watch the video](https://raw.githubusercontent.com/yourusername/yourrepository/main/assets/thumbnail.jpg)](https://raw.githubusercontent.com/yourusername/yourrepository/main/assets/video.mp4)
+[![Watch the video]([https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWk4ZAA57E_7U4OaTlRfNYsBhvbEeOr-hbPA&s)]([https://github.com/Prayush09/course_selling/blob/main/courseSellingAppDemo.mkv])
 
 ## Create a course selling app
 
