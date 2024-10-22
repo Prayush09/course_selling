@@ -6,7 +6,6 @@ This project is a full-stack course selling application where users can sign up,
 
 [**Live Application**](https://course-selling-app-w9qf.onrender.com)
 
-[Watch Video Demo](https://github.com/Prayush09/course_selling/blob/main/courseSellingAppDemo.mkv)
 
 ## Features
 
