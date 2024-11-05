@@ -3,7 +3,7 @@
 ## Project Overview
 
 This project is a full-stack course selling application where users can sign up, log in, purchase courses, and view them. Admins can manage course content, including adding, deleting, and updating courses. The backend is built using Node.js, Express, and MongoDB, with authentication handled by JWT. The app is live and can be accessed at:
-
+https://course-selling-app-w9qf.onrender.com
 [**Live Application**](https://course-selling-app-w9qf.onrender.com)
 
 
